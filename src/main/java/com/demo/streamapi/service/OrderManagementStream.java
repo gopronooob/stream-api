@@ -25,7 +25,11 @@ public class OrderManagementStream implements OrderManagement{
 
     @Override
     public List<Product> getProductByCategoryAndPriceGreaterThan(String category, Double price) {
-        return null;
+      return    productRepository.findAll()
+                 .stream()
+                 .filter(p-> p.getCategory().equalsIgnoreCase("Books"))
+                 .filter(p->p.getPrice()>100)
+                 .collect(Collectors.toList());
     }
 
     @Override
