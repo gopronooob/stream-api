@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderManagementStream implements OrderManagement{
+public class OrderManagementStream implements OrderManagement {
 
     @Autowired
     ProductRepository productRepository;
@@ -25,30 +25,32 @@ public class OrderManagementStream implements OrderManagement{
 
     @Override
     public List<Product> getProductByCategoryAndPriceGreaterThan(String category, Double price) {
-      return    productRepository.findAll()
-                 .stream()
-                 .filter(p-> p.getCategory().equalsIgnoreCase("Books"))
-                 .filter(p->p.getPrice()>100)
-                 .collect(Collectors.toList());
+        return productRepository.findAll()
+                .stream()
+                .filter(p -> p.getCategory().equalsIgnoreCase("Books"))
+                .filter(p -> p.getPrice() > 100)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Order> getOrdersByProductBelogToCategory(String category) {
         return orderRepository.findAll()
                 .stream()
-                .filter(
-                        o->
-                            o.getProducts().stream()
-                                    .anyMatch(p-> p.getCategory().equalsIgnoreCase(category))
-
-
+                .filter( o -> o.getProducts()
+                        .stream()
+                        .anyMatch(p -> p.getCategory()
+                                    .equalsIgnoreCase(category))
                 ).collect(Collectors.toList());
 
     }
 
     @Override
     public List<Product> getProjductByCategoryWithDiscount(String category, int discountPercentage) {
-        return null;
+         return productRepository.findAll()
+                 .stream()
+                 .filter(p->p.getCategory().equalsIgnoreCase(category))
+                 .map(p-> p.withPrice(p.getPrice()*0.9))
+                 .collect(Collectors.toList());
     }
 
     @Override
