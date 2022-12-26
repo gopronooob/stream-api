@@ -34,7 +34,16 @@ public class OrderManagementStream implements OrderManagement{
 
     @Override
     public List<Order> getOrdersByProductBelogToCategory(String category) {
-        return null;
+        return orderRepository.findAll()
+                .stream()
+                .filter(
+                        o->
+                            o.getProducts().stream()
+                                    .anyMatch(p-> p.getCategory().equalsIgnoreCase(category))
+
+
+                ).collect(Collectors.toList());
+
     }
 
     @Override
