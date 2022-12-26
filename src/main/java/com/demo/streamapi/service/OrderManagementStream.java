@@ -55,7 +55,13 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public List<Product> getProductsByCustomerOfTierBetweenDays(Integer CustomerTier, LocalDate startDay, LocalDate endDay) {
-        return null;
+        return orderRepository.findAll().stream()
+                .filter(o->o.getCustomer().getTier().equals(CustomerTier))
+                .filter(o-> o.getOrderDate().compareTo(LocalDate.of(2021, 2, 1)) >= 0)
+                .filter(o-> o.getOrderDate().compareTo(LocalDate.of(2021,04,01))<=0)
+                .flatMap(o-> o.getProducts().stream())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     @Override
