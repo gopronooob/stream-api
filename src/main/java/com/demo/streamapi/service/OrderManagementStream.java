@@ -66,7 +66,16 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public Optional<Product> getCheapestProductByCategory(String category) {
-        return Optional.empty();
+/*        return  productRepository.findAll()
+                .stream()
+                .filter(p -> p.getCategory().equalsIgnoreCase(category))
+                .sorted(Comparator.comparing(Product::getPrice))
+                .findFirst();*/
+        return   productRepository.findAll()
+                .stream()
+                .filter(p -> p.getCategory().equalsIgnoreCase("Books"))
+                .min(Comparator.comparing(Product::getPrice));
+
     }
 
     @Override
