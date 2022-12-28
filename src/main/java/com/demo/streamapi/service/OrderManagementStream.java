@@ -90,7 +90,14 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public List<Product> getProductForDay(LocalDate day) {
-        return null;
+
+        return orderRepository.findAll()
+                .stream()
+                .filter(o -> o.getOrderDate().compareTo(LocalDate.of(2021,03,15))==0)
+                .peek(o -> System.out.println(o) )
+                .flatMap(o -> o.getProducts().stream())
+                .collect(Collectors.toList());
+
     }
 
     @Override
