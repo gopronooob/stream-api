@@ -129,7 +129,16 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public String getProductStatisticsByCategory(String category) {
-        return null;
+        DoubleSummaryStatistics statistics = productRepository.findAll()
+                .stream()
+                .filter(p -> p.getCategory().equalsIgnoreCase(category))
+                .mapToDouble(p -> p.getPrice())
+                .summaryStatistics();
+
+        return(String.format("count = %1$d, average = %2$f, max = %3$f, min = %4$f, sum = %5$f",
+                statistics.getCount(), statistics.getAverage(), statistics.getMax(), statistics.getMin(), statistics.getSum()));
+
+
     }
 
     @Override
