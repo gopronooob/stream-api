@@ -165,7 +165,13 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public Map<Order, Double> getOrderWithTotalPrice() {
-        return null;
+        return orderRepository.findAll()
+                .stream()
+                .collect(
+
+                        Collectors.toMap(Function.identity(),
+                                o-> o.getProducts().stream().mapToDouble(p->p.getPrice()).sum())
+                );
     }
 
     @Override
