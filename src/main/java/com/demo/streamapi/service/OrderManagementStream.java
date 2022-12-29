@@ -143,12 +143,24 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public Map<Long, Integer> getProductCountByOrder() {
-        return null;
+        return orderRepository.findAll()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                o->o.getId(),
+                                o->o.getProducts().size()
+                        )
+                );
     }
 
     @Override
     public Map<Customer, List<Order>> getOrdersByCustomer() {
-        return null;
+        return orderRepository.findAll()
+                .stream()
+                .collect(
+                        Collectors.groupingBy(Order::getCustomer)
+                );
+
     }
 
     @Override
