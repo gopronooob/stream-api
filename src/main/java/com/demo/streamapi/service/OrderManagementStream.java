@@ -103,19 +103,28 @@ public class OrderManagementStream implements OrderManagement {
     @Override
     public double getOrderSalesAmountByMonth(LocalDate salesMonth) {
 
+        //http://localhost:8080/order/salesByMonth?salesMonth=2021-02-01
         return orderRepository.findAll()
                 .stream()
-                .filter(o-> o.getOrderDate().getMonth().equals(salesMonth))
+                .filter(o-> o.getOrderDate().getMonth().equals(salesMonth.getMonth()))
                 .flatMap(o-> o.getProducts().stream())
                 .mapToDouble(p->p.getPrice())
                 .sum();
-
 
     }
 
     @Override
     public OptionalDouble getAvgOrderPaymentByDay(LocalDate salesDay) {
-        return null;
+        System.out.println(salesDay);
+        return orderRepository.findAll()
+                .stream()
+                .filter(o-> o.getOrderDate().equals(salesDay))
+                .peek(o->System.out.println(o))
+                .flatMap(o->o.getProducts().stream())
+                .mapToDouble(p->p.getPrice())
+                .average();
+
+
     }
 
     @Override
