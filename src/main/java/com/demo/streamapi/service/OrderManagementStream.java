@@ -176,7 +176,12 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public Map<String, List<String>> getProductByCategory() {
-        return null;
+         return productRepository.findAll()
+                 .stream()
+                 .collect(Collectors.groupingBy(
+                         Product::getCategory,
+                         Collectors.mapping(p->p.getName(),Collectors.toList()))
+                 );
     }
 
     @Override
