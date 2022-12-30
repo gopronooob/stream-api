@@ -186,6 +186,13 @@ public class OrderManagementStream implements OrderManagement {
 
     @Override
     public Map<String, Optional<Product>> getMostExpensiveProductByCategory() {
-        return null;
+        return productRepository.findAll()
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Product::getCategory,
+                                Collectors.maxBy(Comparator.comparing(Product::getPrice)))
+
+                );
     }
 }
